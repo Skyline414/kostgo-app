@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
+    "@react-native-vector-icons/fontawesome-free-regular": "^2.0.0",
+    "@react-native-vector-icons/fontawesome-free-solid": "^2.0.0",
     "expo": "~58.0.23",
     "expo-status-bar": "~58.0.4",
     "react": "19.3.0",
