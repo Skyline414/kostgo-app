@@ -12,7 +12,8 @@ import HomeScreen from './modules/screens/HomeScreen';
 import ExploreScreen from './modules/screens/ExploreScreen';
 import DetailScreen from './modules/screens/DetailScreen';
 import MapScreen from './modules/screens/MapScreen';
-import { FavoritesScreen, ProfileScreen } from './modules/screens/ProfileScreen';
+import { ProfileScreen } from './modules/screens/ProfileScreen';
+import { FavoritesScreen } from './modules/screens/FavoritesScreen';
 
 const Stack = createNativeStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -34,7 +35,7 @@ function AppProvider({ children }) {
     return (item.name.toLowerCase().includes(query) || item.location.toLowerCase().includes(query))
       && (filter === 'Semua' || item.type === filter);
   }), [filter, search]);
-  
+
   const toggleFavorite = id => setFavorites(previous => (
     previous.includes(id)
       ? previous.filter(item => item !== id)

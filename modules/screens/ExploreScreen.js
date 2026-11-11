@@ -8,7 +8,7 @@ export default function ExploreScreen({
   styles, search, setSearch, filter, setFilter, filteredKosts, onOpen, favorites, onToggleFavorite,
 }) {
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <View>
       <Header title="Explore Places" styles={styles} />
       <View style={styles.exploreSearch}>
         <TextInput
@@ -46,6 +46,6 @@ export default function ExploreScreen({
           <Text style={styles.emptyText}>Kost tidak ditemukan. Coba kata kunci lain.</Text>
         )}
       </View>
-    </ScrollView>
+    </View>
   );
 }

@@ -6,7 +6,7 @@ import { formatPrice, KOSTS } from '../data';
 
 export default function MapScreen({ styles, onOpen, favorites, onToggleFavorite }) {
   return (
-    <ScrollView>
+    <ScrollView style={styles.container}>
       <Header title="Find Location" styles={styles} />
       <View style={styles.mapSearch}><Text>📍 Denpasar, Bali</Text></View>
       <View style={styles.mapContainer}>

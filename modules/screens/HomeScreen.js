@@ -9,7 +9,7 @@ export default function HomeScreen({
   styles, search, setSearch, setFilter, setPage, onOpen, favorites, onToggleFavorite,
 }) {
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <View style={styles.container}>
       <View style={styles.homeHeader}>
         <View>
           <Text style={styles.smallText}>Selamat datang 👋</Text>
@@ -81,6 +81,6 @@ export default function HomeScreen({
           />
         ))}
       </View>
-    </ScrollView>
+    </View>
   );
 }

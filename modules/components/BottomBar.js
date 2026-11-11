@@ -1,11 +1,36 @@
-import React from 'react';
-import { Pressable, Text, View } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { BackHandler, Pressable, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BG } from '../data';
 import { styles } from '../styles';
 
 export default function BottomBar({ state, descriptors, navigation }) {
   const insets = useSafeAreaInsets();
+  const history = useRef([state.routes[state.index].name]);
+
+  useEffect(() => {
+    const current = state.routes[state.index].name;
+    if (history.current[history.current.length - 1] !== current) {
+      history.current.push(current);
+    }
+  }, [state.index, state.routes]);
+
+  useEffect(() => {
+    const handleBack = () => {
+      const rootState = navigation.getParent()?.getState();
+      const onMainTabs = rootState?.routes[rootState.index]?.name === 'MainTabs';
+      if (!onMainTabs) return false;
+
+      if (history.current.length >= 2) {
+        history.current.pop();
+        navigation.navigate(history.current[history.current.length - 1]);
+        return true;
+      }
+    };
+
+    const subscription = BackHandler.addEventListener('hardwareBackPress', handleBack);
+    return () => subscription.remove();
+  }, [navigation]);
 
   return (
     <View style={{ backgroundColor: BG, paddingBottom: insets.bottom }}>

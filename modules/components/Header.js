@@ -11,7 +11,6 @@ export default function Header({ title, back = false, styles, onBack }) {
         </TouchableOpacity>
       )}
       <Text style={styles.headerTitle}>{title}</Text>
-      {/* {!back && <Text style={styles.headerIcon}>⌕</Text>} */}
     </View>
   );
 }

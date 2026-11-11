@@ -2,12 +2,10 @@ import React from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { FontAwesomeFreeSolid } from "@react-native-vector-icons/fontawesome-free-solid";
 import Header from '../components/Header';
-import KostCard from '../components/KostCard';
-import { formatPrice, KOSTS } from '../data';
 
 export function ProfileScreen({ styles, setPage }) {
   return (
-    <ScrollView>
+    <ScrollView style={styles.container}>
       <Header title="My Profile" styles={styles} />
       <View style={styles.profileContainer}>
         <View style={styles.avatar}><Text style={{ fontSize: 45 }}>👩🏻</Text></View>
@@ -28,27 +26,6 @@ export function ProfileScreen({ styles, setPage }) {
             <FontAwesomeFreeSolid name="chevron-right" size={12} color="#A9C5BC" style={styles.menuArrow} />
           </TouchableOpacity>
         ))}
-      </View>
-    </ScrollView>
-  );
-}
-
-export function FavoritesScreen({ styles, favorites, onOpen, onToggleFavorite }) {
-  return (
-    <ScrollView>
-      <Header title="My Favorites" back styles={styles} onBack={() => onOpen(null)} />
-      <View style={styles.section}>
-        {KOSTS.filter(item => favorites.includes(item.id)).map(item => (
-          <KostCard
-            key={item.id}
-            item={{ ...item, formattedPrice: formatPrice(item.price) }}
-            styles={styles}
-            onOpen={onOpen}
-            isFavorite
-            onToggleFavorite={onToggleFavorite}
-          />
-        ))}
-        {favorites.length === 0 && <Text style={styles.emptyText}>Belum ada kost yang disimpan.</Text>}
       </View>
     </ScrollView>
   );
