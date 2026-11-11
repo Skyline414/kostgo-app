@@ -1,5 +1,5 @@
 {
-  "name": "manajemen-kost-app",
+  "name": "kostgo",
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
