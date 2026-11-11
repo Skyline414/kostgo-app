@@ -104,7 +104,8 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: DARK,
-    marginBottom: 14,
+    marginTop: 14,
+    marginBottom: 10,
   },
   seeAll: {
     color: GREEN,
@@ -335,6 +336,7 @@ export const styles = StyleSheet.create({
   mapSearch: {
     backgroundColor: 'white',
     margin: 18,
+    marginTop: 0,
     padding: 16,
     borderRadius: 12,
   },

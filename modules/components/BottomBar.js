@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { BackHandler, Pressable, Text, View } from 'react-native';
+import { BackHandler, Pressable, Text, View, ToastAndroid } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BG } from '../data';
 import { styles } from '../styles';
@@ -7,6 +7,7 @@ import { styles } from '../styles';
 export default function BottomBar({ state, descriptors, navigation }) {
   const insets = useSafeAreaInsets();
   const history = useRef([state.routes[state.index].name]);
+  const lastBack = useRef(0);
 
   useEffect(() => {
     const current = state.routes[state.index].name;
@@ -26,6 +27,16 @@ export default function BottomBar({ state, descriptors, navigation }) {
         navigation.navigate(history.current[history.current.length - 1]);
         return true;
       }
+
+      const now = Date.now();
+      if (now - lastBack.current < 2000) {
+        BackHandler.exitApp();
+        return true;
+      }
+
+      lastBack.current = now;
+      ToastAndroid.show('Tekan sekali lagi untuk keluar', ToastAndroid.SHORT);
+      return true;
     };
 
     const subscription = BackHandler.addEventListener('hardwareBackPress', handleBack);
