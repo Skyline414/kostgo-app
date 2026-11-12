@@ -1,47 +1,11 @@
-import React, { useEffect, useRef } from 'react';
-import { BackHandler, Pressable, Text, View, ToastAndroid } from 'react-native';
+import React from 'react';
+import { Pressable, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BG } from '../data';
 import { styles } from '../styles';
 
-export default function BottomBar({ state, descriptors, navigation }) {
+export default function BottomBar({ state, descriptors, navigation, onTabChange }) {
   const insets = useSafeAreaInsets();
-  const history = useRef([state.routes[state.index].name]);
-  const lastBack = useRef(0);
-
-  useEffect(() => {
-    const current = state.routes[state.index].name;
-    if (history.current[history.current.length - 1] !== current) {
-      history.current.push(current);
-    }
-  }, [state.index, state.routes]);
-
-  useEffect(() => {
-    const handleBack = () => {
-      const rootState = navigation.getParent()?.getState();
-      const onMainTabs = rootState?.routes[rootState.index]?.name === 'MainTabs';
-      if (!onMainTabs) return false;
-
-      if (history.current.length >= 2) {
-        history.current.pop();
-        navigation.navigate(history.current[history.current.length - 1]);
-        return true;
-      }
-
-      const now = Date.now();
-      if (now - lastBack.current < 2000) {
-        BackHandler.exitApp();
-        return true;
-      }
-
-      lastBack.current = now;
-      ToastAndroid.show('Tekan sekali lagi untuk keluar', ToastAndroid.SHORT);
-      return true;
-    };
-
-    const subscription = BackHandler.addEventListener('hardwareBackPress', handleBack);
-    return () => subscription.remove();
-  }, [navigation]);
 
   return (
     <View style={{ backgroundColor: BG, paddingBottom: insets.bottom }}>
@@ -59,7 +23,10 @@ export default function BottomBar({ state, descriptors, navigation }) {
               target: route.key,
               canPreventDefault: true,
             });
-            if (!focused && !event.defaultPrevented) navigation.navigate(route.name);
+            if (!focused && !event.defaultPrevented) {
+              onTabChange(route.name);
+              navigation.navigate(route.name);
+            }
           };
 
           return (

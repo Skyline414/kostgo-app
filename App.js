@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useContext, useMemo, useRef, useState } from 'react';
+import { BackHandler, ToastAndroid } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { FontAwesomeFreeSolid } from '@react-native-vector-icons/fontawesome-free-solid';
@@ -59,6 +60,38 @@ function AppProvider({ children }) {
 
 function MainTabs({ navigation }) {
   const app = useApp();
+  const tabHistory = useRef(['Home']);
+  const recordTab = tab => {
+    if (tabHistory.current[tabHistory.current.length - 1] !== tab) {
+      tabHistory.current.push(tab);
+    }
+  };
+  useFocusEffect(useCallback(() => {
+    let lastBack = 0;
+    const handleBack = () => {
+      if (tabHistory.current.length > 1) {
+        tabHistory.current.pop();
+        navigation.navigate('MainTabs', {
+          screen: tabHistory.current[tabHistory.current.length - 1],
+        });
+        return true;
+      }
+
+      const now = Date.now();
+      if (now - lastBack < 2000) {
+        BackHandler.exitApp();
+        return true;
+      }
+
+      lastBack = now;
+      ToastAndroid.show('Tekan sekali lagi untuk keluar', ToastAndroid.SHORT);
+      return true;
+    };
+
+    const subscription = BackHandler.addEventListener('hardwareBackPress', handleBack);
+    return () => subscription.remove();
+  }, [navigation]));
+
   const openDetail = kost => navigation.navigate('Detail', { kostId: kost.id });
   const sharedProps = {
     styles,
@@ -68,7 +101,7 @@ function MainTabs({ navigation }) {
   };
   return (
     <Tabs.Navigator
-      tabBar={props => <BottomBar {...props} />}
+      tabBar={props => <BottomBar {...props} onTabChange={recordTab} />}
       screenOptions={{
         headerShown: false,
       }}
@@ -83,7 +116,10 @@ function MainTabs({ navigation }) {
             search={app.search}
             setSearch={app.setSearch}
             setFilter={app.setFilter}
-            setPage={page => tabNavigation.navigate(page)}
+            setPage={page => {
+              recordTab(page);
+              tabNavigation.navigate(page);
+            }}
           />
         )}
       </Tabs.Screen>
