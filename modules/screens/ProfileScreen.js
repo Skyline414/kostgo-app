@@ -20,7 +20,10 @@ export function ProfileScreen({ styles, setPage }) {
           <TouchableOpacity
             key={title}
             style={styles.menuItem}
-            onPress={() => title === 'My Favorites' && setPage('Favorites')}
+            onPress={() => {
+              if (title === 'My Favorites') setPage('Favorites');
+              if (title === 'My Booking') setPage('Bookings');
+            }}
           >
             <Text style={styles.menuText}>{icon}   {title}</Text>
             <FontAwesomeFreeSolid name="chevron-right" size={12} color="#A9C5BC" style={styles.menuArrow} />

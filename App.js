@@ -14,6 +14,7 @@ import DetailScreen from './modules/screens/DetailScreen';
 import MapScreen from './modules/screens/MapScreen';
 import { ProfileScreen } from './modules/screens/ProfileScreen';
 import { FavoritesScreen } from './modules/screens/FavoritesScreen';
+import BookingsScreen from './modules/screens/BookingsScreen';
 
 const Stack = createNativeStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -29,6 +30,7 @@ function AppProvider({ children }) {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('Semua');
   const [favorites, setFavorites] = useState([]);
+  const [bookings, setBookings] = useState([]);
 
   const filteredKosts = useMemo(() => KOSTS.filter(item => {
     const query = search.toLowerCase();
@@ -41,10 +43,14 @@ function AppProvider({ children }) {
       ? previous.filter(item => item !== id)
       : [...previous, id]
   ));
+  const addBooking = id => setBookings(previous => (
+    previous.includes(id) ? previous : [...previous, id]
+  ));
 
   return (
     <AppContext.Provider value={{
-      search, setSearch, filter, setFilter, favorites, filteredKosts, toggleFavorite,
+      search, setSearch, filter, setFilter, favorites, bookings,
+      filteredKosts, toggleFavorite, addBooking,
     }}>
       {children}
     </AppContext.Provider>
@@ -113,9 +119,8 @@ function MainTabs({ navigation }) {
 }
 
 function DetailRoute({ route, navigation }) {
-  const { favorites, toggleFavorite } = useApp();
+  const { favorites, bookings, toggleFavorite, addBooking } = useApp();
   const kost = KOSTS.find(item => item.id === route.params.kostId);
-  const [booking, setBooking] = useState(false);
 
   if (!kost) throw new Error(`Kost ${route.params.kostId} was not found`);
 
@@ -124,8 +129,8 @@ function DetailRoute({ route, navigation }) {
       styles={styles}
       kost={kost}
       favorites={favorites}
-      booking={booking}
-      setBooking={setBooking}
+      booking={bookings.includes(kost.id)}
+      setBooking={() => addBooking(kost.id)}
       onBack={() => navigation.goBack()}
       onToggleFavorite={toggleFavorite}
     />
@@ -144,6 +149,20 @@ function FavoritesRoute({ navigation }) {
   );
 }
 
+function BookingsRoute({ navigation }) {
+  const { bookings, favorites, toggleFavorite } = useApp();
+  return (
+    <BookingsScreen
+      styles={styles}
+      bookings={bookings}
+      favorites={favorites}
+      onOpen={kost => navigation.push('Detail', { kostId: kost.id })}
+      onToggleFavorite={toggleFavorite}
+      onBack={() => navigation.goBack()}
+    />
+  );
+}
+
 export default function App() {
   return (
     <SafeAreaProvider>
@@ -155,6 +174,7 @@ export default function App() {
               <Stack.Screen name="MainTabs" component={MainTabs} />
               <Stack.Screen name="Detail" component={DetailRoute} />
               <Stack.Screen name="Favorites" component={FavoritesRoute} />
+              <Stack.Screen name="Bookings" component={BookingsRoute} />
             </Stack.Navigator>
           </NavigationContainer>
         </SafeAreaView>
