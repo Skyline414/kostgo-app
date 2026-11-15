@@ -2,9 +2,9 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MainTabs from './MainTabs';
-import DetailScreen from '../features/account/DetailScreen';
-import FavoritesScreen from '../features/account/FavoritesScreen';
-import BookingsScreen from '../features/account/BookingsScreen';
+import DetailScreen from '../screens/part2/DetailScreen';
+import FavoritesScreen from '../screens/part1/FavoritesScreen';
+import BookingsScreen from '../screens/part1/BookingsScreen';
 
 const Stack = createNativeStackNavigator();
 

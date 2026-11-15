@@ -2,10 +2,10 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesomeFreeSolid } from '@react-native-vector-icons/fontawesome-free-solid';
 import BottomBar from '../core/components/BottomBar';
-import HomeScreen from '../features/discovery/HomeScreen';
-import ExploreScreen from '../features/discovery/ExploreScreen';
-import MapScreen from '../features/discovery/MapScreen';
-import ProfileScreen from '../features/account/ProfileScreen';
+import HomeScreen from '../screens/part2/HomeScreen';
+import ExploreScreen from '../screens/part2/ExploreScreen';
+import MapScreen from '../screens/part1/MapScreen';
+import ProfileScreen from '../screens/part1/ProfileScreen';
 import useTabBackHandler from './useTabBackHandler';
 
 const Tabs = createBottomTabNavigator();
