@@ -1,15 +1,4 @@
 {
-<<<<<<< HEAD
-  "name": "kost",
-  "version": "1.0.0",
-  "main": "index.js",
-  "dependencies": {
-    "expo": "~58.0.23",
-    "expo-status-bar": "~58.0.4",
-    "react": "19.3.0",
-    "react-native": "0.88.1",
-    "react-native-maps": "1.29.11"
-=======
   "name": "kostgo",
   "version": "1.0.0",
   "main": "index.js",
@@ -27,7 +16,6 @@
     "react-native-safe-area-context": "~5.11.1",
     "react-native-screens": "~4.30.1",
     "react-native-web": "^0.21.4"
->>>>>>> 08ca74c9d580789e32f2d5347fb6fa0b5e2f2f1a
   },
   "scripts": {
     "start": "expo start",
