@@ -23,6 +23,7 @@ export default function MainTabs({ navigation }) {
   return (
     <Tabs.Navigator
       tabBar={props => <BottomBar {...props} />}
+      backBehavior="none"
       screenOptions={{ headerShown: false }}
       screenListeners={({ route }) => ({
         focus: () => recordTab(route.name),
