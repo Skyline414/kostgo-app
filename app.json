@@ -1,7 +1,12 @@
 {
   "expo": {
+<<<<<<< HEAD
     "name": "KOST",
     "slug": "KOST",
+=======
+    "name": "KostGo",
+    "slug": "kostgo-app",
+>>>>>>> 08ca74c9d580789e32f2d5347fb6fa0b5e2f2f1a
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -19,6 +24,15 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+<<<<<<< HEAD
     }
+=======
+    },
+    "plugins": [
+      "@react-native-vector-icons/fontawesome-free-solid",
+      "@react-native-vector-icons/fontawesome-free-regular",
+      "expo-status-bar"
+    ]
+>>>>>>> 08ca74c9d580789e32f2d5347fb6fa0b5e2f2f1a
   }
 }

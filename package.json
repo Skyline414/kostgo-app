@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "kost",
   "version": "1.0.0",
   "main": "index.js",
@@ -8,6 +9,25 @@
     "react": "19.3.0",
     "react-native": "0.88.1",
     "react-native-maps": "1.29.11"
+=======
+  "name": "kostgo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "@react-native-vector-icons/fontawesome-free-regular": "^2.0.0",
+    "@react-native-vector-icons/fontawesome-free-solid": "^2.0.0",
+    "@react-navigation/bottom-tabs": "^7.21.0",
+    "@react-navigation/native": "^7.5.1",
+    "@react-navigation/native-stack": "^7.21.0",
+    "expo": "~58.0.25",
+    "expo-status-bar": "~58.0.5",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-native": "0.88.1",
+    "react-native-safe-area-context": "~5.11.1",
+    "react-native-screens": "~4.30.1",
+    "react-native-web": "^0.21.4"
+>>>>>>> 08ca74c9d580789e32f2d5347fb6fa0b5e2f2f1a
   },
   "scripts": {
     "start": "expo start",
