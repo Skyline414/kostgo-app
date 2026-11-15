@@ -16,7 +16,7 @@ export function AppProvider({ children }) {
   const [bookings, setBookings] = useState([]);
 
   const filteredKosts = useMemo(() => KOSTS.filter(item => {
-    const query = search.toLowerCase();
+    const query = search.trim().toLowerCase();
     return (item.name.toLowerCase().includes(query) || item.location.toLowerCase().includes(query))
       && (filter === FILTER_ALL || item.type === filter);
   }), [filter, search]);
