@@ -5,11 +5,11 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  ScrollView,
   Alert,
 } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
+import KeyboardScrollView from '../../core/components/KeyboardScrollView';
 import { useApp } from '../../core/state/AppContext';
 import { styles } from './LoginScreen.styles';
 
@@ -115,11 +115,10 @@ export default function LoginScreen() {
   };
 
   return (
-    <ScrollView
+    <KeyboardScrollView
       style={styles.container}
       contentContainerStyle={styles.content}
       showsVerticalScrollIndicator={false}
-      keyboardShouldPersistTaps="handled"
     >
       <View style={styles.logoContainer}>
         <Text style={styles.logo}>KOSTGO</Text>
@@ -217,6 +216,6 @@ export default function LoginScreen() {
       <Text style={styles.footer}>
         © 2026 KostGo. Find Your Dream Place.
       </Text>
-    </ScrollView>
+    </KeyboardScrollView>
   );
 }
