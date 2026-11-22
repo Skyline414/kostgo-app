@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Keyboard, KeyboardAvoidingView, Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { DEFAULT_KOST_IMAGE, KOST_TYPES } from '../../core/data/kosts';
 import { styles } from './KostFormModal.styles';
 
@@ -28,6 +29,18 @@ const toForm = kost => (kost ? {
 // Form tambah kost (kost kosong) atau ubah kost (kost dikirim lewat props).
 export default function KostFormModal({ visible, kost, onClose, onSave }) {
   const [form, setForm] = useState(EMPTY_FORM);
+  const insets = useSafeAreaInsets();
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
+
+  // Padding bilah navigasi hanya dipakai saat keyboard tertutup.
+  useEffect(() => {
+    const show = Keyboard.addListener('keyboardDidShow', () => setKeyboardOpen(true));
+    const hide = Keyboard.addListener('keyboardDidHide', () => setKeyboardOpen(false));
+    return () => {
+      show.remove();
+      hide.remove();
+    };
+  }, []);
 
   useEffect(() => {
     if (visible) setForm(toForm(kost));
@@ -65,9 +78,17 @@ export default function KostFormModal({ visible, kost, onClose, onSave }) {
   };
 
   return (
-    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
-      <View style={styles.overlay}>
-        <View style={styles.sheet}>
+    // Translucent: jendela Modal menutupi seluruh layar, termasuk di bawah bilah navigasi.
+    <Modal
+      visible={visible}
+      transparent
+      animationType="slide"
+      statusBarTranslucent
+      navigationBarTranslucent
+      onRequestClose={onClose}
+    >
+      <KeyboardAvoidingView style={styles.overlay} behavior="padding">
+        <View style={[styles.sheet, { paddingBottom: 20 + (keyboardOpen ? 0 : insets.bottom) }]}>
           <Text style={styles.title}>{kost ? 'Ubah Kost' : 'Tambah Kost'}</Text>
           <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
             <Text style={styles.label}>Nama kost</Text>
@@ -149,18 +170,18 @@ export default function KostFormModal({ visible, kost, onClose, onSave }) {
               onChangeText={value => setField('image', value)}
               autoCapitalize="none"
             />
-          </ScrollView>
 
-          <View style={styles.buttonRow}>
-            <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
-              <Text style={styles.cancelText}>Batal</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-              <Text style={styles.saveText}>Simpan</Text>
-            </TouchableOpacity>
-          </View>
+            <View style={styles.buttonRow}>
+              <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
+                <Text style={styles.cancelText}>Batal</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+                <Text style={styles.saveText}>Simpan</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }
