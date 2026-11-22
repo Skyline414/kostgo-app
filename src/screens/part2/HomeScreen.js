@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesomeFreeSolid } from '@react-native-vector-icons/fontawesome-free-solid';
-import { FILTER_ALL, KOST_TYPES, KOSTS } from '../../core/data/kosts';
+import { FILTER_ALL, KOST_TYPES } from '../../core/data/kosts';
 import useOpenKost from '../../core/hooks/useOpenKost';
 import { useApp } from '../../core/state/AppContext';
 import { formatPrice } from '../../core/utils/format';
@@ -15,7 +15,7 @@ const CATEGORY_ICONS = { Putri: '👩', Putra: '👨', Campur: '🏠' };
 
 export default function HomeScreen() {
   const navigation = useNavigation();
-  const { search, setSearch, setFilter } = useApp();
+  const { search, setSearch, setFilter, kosts } = useApp();
   const openKost = useOpenKost();
 
   const goToExplore = () => navigation.navigate('Explore');
@@ -78,7 +78,7 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {KOSTS.map(item => (
+          {kosts.map(item => (
             <TouchableOpacity key={item.id} style={styles.homeCard} onPress={() => openKost(item)}>
               <Image source={{ uri: item.image }} style={styles.homeImage} />
               <View style={styles.homeCardInfo}>
@@ -94,7 +94,7 @@ export default function HomeScreen() {
 
       <View style={commonStyles.section}>
         <Text style={commonStyles.sectionTitle}>Recommended for you</Text>
-        {KOSTS.slice(0, 2).map(item => <KostCard key={item.id} item={item} />)}
+        {kosts.slice(0, 2).map(item => <KostCard key={item.id} item={item} />)}
       </View>
     </ScrollView>
   );

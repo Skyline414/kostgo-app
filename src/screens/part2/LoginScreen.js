@@ -5,11 +5,12 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  ScrollView,
   Alert,
 } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
+import KeyboardScrollView from '../../core/components/KeyboardScrollView';
+import { useApp } from '../../core/state/AppContext';
 import { styles } from './LoginScreen.styles';
 
 export default function LoginScreen() {
@@ -21,20 +22,7 @@ export default function LoginScreen() {
   const [nama, setNama] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  const [users, setUsers] = useState([
-    {
-      nama: 'Admin KOSTGO',
-      email: 'admin@kostgo.com',
-      password: 'kostgo123',
-      role: 'admin',
-    },
-    {
-      nama: 'User KOSTGO',
-      email: 'user@kostgo.com',
-      password: 'user123',
-      role: 'user',
-    },
-  ]);
+  const { users, addUser, login } = useApp();
 
   const handleLogin = () => {
     if (!email.trim() || !password.trim()) {
@@ -55,10 +43,12 @@ export default function LoginScreen() {
         [
           {
             text: 'Masuk',
-            onPress: () =>
-              navigation.replace('MainTabs', {
-                user: account,
-              }),
+            onPress: () => {
+              login(account);
+              navigation.replace(
+                account.role === 'admin' ? 'AdminDashboard' : 'MainTabs'
+              );
+            },
           },
         ]
       );
@@ -105,7 +95,7 @@ export default function LoginScreen() {
       role: 'user',
     };
 
-    setUsers([...users, newUser]);
+    addUser(newUser);
 
     Alert.alert(
       'Registrasi Berhasil',
@@ -125,11 +115,10 @@ export default function LoginScreen() {
   };
 
   return (
-    <ScrollView
+    <KeyboardScrollView
       style={styles.container}
       contentContainerStyle={styles.content}
       showsVerticalScrollIndicator={false}
-      keyboardShouldPersistTaps="handled"
     >
       <View style={styles.logoContainer}>
         <Text style={styles.logo}>KOSTGO</Text>
@@ -145,8 +134,8 @@ export default function LoginScreen() {
 
         <Text style={styles.subtitle}>
           {isRegister
-            ? 'Daftar akun baru KOSTGO sekarang'
-            : 'Login untuk melanjutkan ke aplikasi KOSTGO'}
+            ? 'Daftar akun baru KostGo sekarang'
+            : 'Login untuk melanjutkan ke aplikasi KostGo'}
         </Text>
 
         {isRegister && (
@@ -225,8 +214,8 @@ export default function LoginScreen() {
       </View>
 
       <Text style={styles.footer}>
-        © 2026 KOSTGO. Find Your Dream Place.
+        © 2026 KostGo. Find Your Dream Place.
       </Text>
-    </ScrollView>
+    </KeyboardScrollView>
   );
 }

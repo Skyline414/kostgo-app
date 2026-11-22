@@ -2,7 +2,6 @@ import React from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { FontAwesomeFreeSolid } from '@react-native-vector-icons/fontawesome-free-solid';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { KOSTS } from '../../core/data/kosts';
 import { useApp } from '../../core/state/AppContext';
 import { formatPrice } from '../../core/utils/format';
 import { commonStyles } from '../../core/styles/common';
@@ -11,8 +10,8 @@ import HeartIcon from '../../core/components/HeartIcon';
 import { styles } from './DetailScreen.styles';
 
 export default function DetailScreen({ route, navigation }) {
-  const { favorites, bookings, toggleFavorite, addBooking } = useApp();
-  const kost = KOSTS.find(item => item.id === route.params.kostId);
+  const { kosts, favorites, bookings, toggleFavorite, addBooking } = useApp();
+  const kost = kosts.find(item => item.id === route.params.kostId);
 
   if (!kost) throw new Error(`Kost ${route.params.kostId} was not found`);
 
