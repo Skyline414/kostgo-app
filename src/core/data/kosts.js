@@ -1,5 +1,6 @@
 export const FILTER_ALL = 'Semua';
 export const KOST_TYPES = ['Putri', 'Putra', 'Campur'];
+export const DEFAULT_KOST_IMAGE = 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800';
 
 export const KOSTS = [
   {

@@ -1,14 +1,13 @@
 import React from 'react';
 import { ScrollView, Text, View } from 'react-native';
-import { KOSTS } from '../../core/data/kosts';
 import { useApp } from '../../core/state/AppContext';
 import { commonStyles } from '../../core/styles/common';
 import Header from '../../core/components/Header';
 import KostCard from '../../core/components/KostCard';
 
 export default function BookingsScreen() {
-  const { bookings } = useApp();
-  const bookedKosts = KOSTS.filter(item => bookings.includes(item.id));
+  const { kosts, bookings } = useApp();
+  const bookedKosts = kosts.filter(item => bookings.includes(item.id));
 
   return (
     <ScrollView style={commonStyles.container} showsVerticalScrollIndicator={false}>

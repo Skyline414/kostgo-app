@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { KOSTS } from '../../core/data/kosts';
+import { useApp } from '../../core/state/AppContext';
 import useOpenKost from '../../core/hooks/useOpenKost';
 import { commonStyles } from '../../core/styles/common';
 import Header from '../../core/components/Header';
@@ -9,6 +9,7 @@ import { styles } from './MapScreen.styles';
 
 export default function MapScreen() {
   const openKost = useOpenKost();
+  const { kosts } = useApp();
 
   return (
     <ScrollView style={commonStyles.container}>
@@ -20,7 +21,7 @@ export default function MapScreen() {
         <View style={styles.mapRoad3} />
         <Text style={styles.mapLabel}>Jalan Mahendradatta</Text>
         <Text style={styles.mapLabel2}>Area Denpasar</Text>
-        {KOSTS.map((item, index) => (
+        {kosts.map((item, index) => (
           <TouchableOpacity
             key={item.id}
             style={[styles.mapPin, { top: 85 + index * 95, left: 60 + index * 65 }]}
@@ -32,7 +33,7 @@ export default function MapScreen() {
       </View>
       <View style={commonStyles.section}>
         <Text style={commonStyles.sectionTitle}>Nearby Kost</Text>
-        {KOSTS.map(item => <KostCard key={item.id} item={item} />)}
+        {kosts.map(item => <KostCard key={item.id} item={item} />)}
       </View>
     </ScrollView>
   );

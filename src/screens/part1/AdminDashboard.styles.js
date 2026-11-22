@@ -79,6 +79,22 @@ export const styles = StyleSheet.create({
     color: '#888',
     marginTop: 2,
   },
+  sectionRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  addButton: {
+    backgroundColor: GREEN,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  addButtonText: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
   kostRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -102,5 +118,31 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
     marginTop: 5,
+  },
+  actions: {
+    width: 62,
+  },
+  editButton: {
+    backgroundColor: '#E4F0EC',
+    borderRadius: 8,
+    paddingVertical: 6,
+    alignItems: 'center',
+  },
+  editText: {
+    color: GREEN,
+    fontSize: 11,
+    fontWeight: 'bold',
+  },
+  deleteButton: {
+    backgroundColor: '#FBE9E7',
+    borderRadius: 8,
+    paddingVertical: 6,
+    alignItems: 'center',
+    marginTop: 6,
+  },
+  deleteText: {
+    color: '#C62828',
+    fontSize: 11,
+    fontWeight: 'bold',
   },
 });

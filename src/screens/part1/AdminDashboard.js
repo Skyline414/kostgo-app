@@ -1,22 +1,23 @@
-import React, { useMemo } from 'react';
-import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { Alert, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { KOSTS, KOST_TYPES } from '../../core/data/kosts';
+import { KOST_TYPES } from '../../core/data/kosts';
 import useLogout from '../../core/hooks/useLogout';
 import { useApp } from '../../core/state/AppContext';
 import { formatPrice } from '../../core/utils/format';
 import { commonStyles } from '../../core/styles/common';
+import KostFormModal from './KostFormModal';
 import { styles } from './AdminDashboard.styles';
-
-const kosts = KOSTS;
 
 const average = values => (
   values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 0
 );
 
 export default function AdminDashboard() {
-  const { bookings, favorites, currentUser } = useApp();
+  const { kosts, bookings, favorites, currentUser, addKost, updateKost, deleteKost } = useApp();
   const logout = useLogout();
+  const [formVisible, setFormVisible] = useState(false);
+  const [editing, setEditing] = useState(null);
 
   const stats = useMemo(() => ({
     averagePrice: Math.round(average(kosts.map(item => item.price))),
@@ -25,7 +26,7 @@ export default function AdminDashboard() {
       type,
       count: kosts.filter(item => item.type === type).length,
     })),
-  }), []);
+  }), [kosts]);
 
   const hasKosts = kosts.length > 0;
   const cards = [
@@ -34,6 +35,29 @@ export default function AdminDashboard() {
     { label: 'Favorit', value: String(favorites.length) },
     { label: 'Rata-rata Rating', value: hasKosts ? `★ ${stats.averageRating.toFixed(1)}` : '-' },
   ];
+
+  const openAdd = () => {
+    setEditing(null);
+    setFormVisible(true);
+  };
+
+  const openEdit = kost => {
+    setEditing(kost);
+    setFormVisible(true);
+  };
+
+  const handleSave = data => {
+    if (editing) updateKost(editing.id, data);
+    else addKost(data);
+    setFormVisible(false);
+  };
+
+  const confirmDelete = kost => {
+    Alert.alert('Hapus kost?', `${kost.name} akan dihapus dari aplikasi.`, [
+      { text: 'Batal', style: 'cancel' },
+      { text: 'Hapus', style: 'destructive', onPress: () => deleteKost(kost.id) },
+    ]);
+  };
 
   return (
     <SafeAreaView style={commonStyles.container} edges={['bottom']}>
@@ -74,7 +98,12 @@ export default function AdminDashboard() {
             </View>
           </View>
 
-          <Text style={commonStyles.sectionTitle}>Daftar Kost</Text>
+          <View style={styles.sectionRow}>
+            <Text style={commonStyles.sectionTitle}>Kelola Kost</Text>
+            <TouchableOpacity style={styles.addButton} onPress={openAdd}>
+              <Text style={styles.addButtonText}>+ Tambah</Text>
+            </TouchableOpacity>
+          </View>
           {kosts.map(item => (
             <View key={item.id} style={styles.kostRow}>
               <Image source={{ uri: item.image }} style={styles.kostImage} />
@@ -83,10 +112,28 @@ export default function AdminDashboard() {
                 <Text style={commonStyles.location} numberOfLines={1}>📍 {item.location}</Text>
                 <Text style={styles.kostMeta}>{item.type} · {formatPrice(item.price)}</Text>
               </View>
+              <View style={styles.actions}>
+                <TouchableOpacity style={styles.editButton} onPress={() => openEdit(item)}>
+                  <Text style={styles.editText}>Ubah</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.deleteButton} onPress={() => confirmDelete(item)}>
+                  <Text style={styles.deleteText}>Hapus</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           ))}
+          {!hasKosts && (
+            <Text style={commonStyles.emptyText}>Belum ada kost. Tekan + Tambah.</Text>
+          )}
         </View>
       </ScrollView>
+
+      <KostFormModal
+        visible={formVisible}
+        kost={editing}
+        onClose={() => setFormVisible(false)}
+        onSave={handleSave}
+      />
     </SafeAreaView>
   );
 }
