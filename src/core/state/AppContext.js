@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useMemo, useState } from 'react';
 import { FILTER_ALL, KOSTS } from '../data/kosts';
+import { USERS } from '../data/users';
 
 const AppContext = createContext(null);
 
@@ -14,6 +15,8 @@ export function AppProvider({ children }) {
   const [filter, setFilter] = useState(FILTER_ALL);
   const [favorites, setFavorites] = useState([]);
   const [bookings, setBookings] = useState([]);
+  const [users, setUsers] = useState(USERS);
+  const [currentUser, setCurrentUser] = useState(null);
 
   const filteredKosts = useMemo(() => KOSTS.filter(item => {
     const query = search.trim().toLowerCase();
@@ -30,10 +33,15 @@ export function AppProvider({ children }) {
     previous.includes(id) ? previous : [...previous, id]
   ));
 
+  const addUser = user => setUsers(previous => [...previous, user]);
+  const login = user => setCurrentUser(user);
+  const logout = () => setCurrentUser(null);
+
   return (
     <AppContext.Provider value={{
       search, setSearch, filter, setFilter, favorites, bookings,
       filteredKosts, toggleFavorite, addBooking,
+      users, addUser, currentUser, login, logout,
     }}>
       {children}
     </AppContext.Provider>
